@@ -2,22 +2,27 @@
 Run in CORE   - Quick Guide
 First make sure that CORE has been installed. If you have not installed CORE, follow CORE Tutorial to install.
 Also, Install python3-tk:
-$ sudo apt-get install python3-tk
+
+    $ sudo apt-get install python3-tk
 Download the Micromouse framework from Micrmouse Github Page. 
- $ cd ~
- $ git clone https://github.com/wsonguga/MazeNavigation.git
- $ cd Micromouse
+
+    $ cd ~
+    $ git clone https://github.com/wsonguga/MazeNavigation.git
+    $ cd Micromouse
  
 Configure the CORE environment for running core_demo.py
- $ sudo ./setCORE.sh
+
+    $ sudo ./setCORE.sh
  
 If you encounter any problems running the above script, you may need to manually configure the environment for CORE.
 Open the framework/gui.py before starting a session:
- $ cd framework
- $ python3 gui.py
+
+    $ cd framework
+    $ python3 gui.py
  
 Open CORE to demonstrate:
- $ core-gui
+
+    $ core-gui
  
 Then open maze.xml, click the Start button.
 
