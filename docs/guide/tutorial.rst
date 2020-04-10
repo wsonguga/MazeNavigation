@@ -1,98 +1,4 @@
    
-Tutorial
-***************************
-
-To design a new algorithm for running a micromouse, you need to write your own strategy inheriting from class **Strategy** and overrides the functions:
-
-    - *checkFinished()* 
-    - *go()*.
-
-Create a python file and write a function to create a micromouse to run.
-
-Example
-==========================
-The example shows how DFS algorithm is applied using the framework to traverse the maze.
- 
-For a basic DFS algorithm for only one mouse running in the maze, you can write a Strategy called **StrategyDFS** which inherits the **Strategy** class and overrides the function *checkFinished()* and function *go()*. The function *checkFinished()* is called because the Task Loader repeatedly check whether the task applying the strategy has finished after calling function *go()*. The main structure of function *run()* of Task Loader is as follows:
-
-::
-
-    def run():
-        while not strategy.checkFinished():
-            strategy.go()
-
-**Step 1**: Write your own strategy inheriting from class Strategy and overrides the function *checkFinished()* and function *go()*.
-
-Let’s suppose we write a class inherits from **Strategy** as follows: (copied from strategy.py -> **StrategyTestDFS**)
-
-::
-
-    class StrategyTestDFS(Strategy):
-        mouse = None    # It is necessary to keep a mouse instance as a member variant of Strategy class
-        isVisited = []  # The isVisited is a two-dimensional array marking which cell has been visited by itself or other robots
-        path = []       # The path is a stack to track the path that mouse goes through
-        isBack = False  # Use a flag to mark whether the mouse has gone back to the origin
-        network = None  # The instance of NetworkInterface
-
-        def __init__(self, mouse):  # Called when Micromouse add a task with this strategy and it passes instance of itself as the second argument
-            self.mouse = mouse
-            self.isVisited = [[0 for i in range(self.mouse.mazeMap.width)] for j in range(self.mouse.mazeMap.height)]
-            self.isVisited[self.mouse.x][self.mouse.y] = 1  # 1 marks that isVisited[x][y] has been visited
-
-        def checkFinished(self):
-            return self.isBack      # The terminating condition is that isBack = 1
-
-        def go(self):
-            # Sequentially check four directions, go if there is no wall and has not been visited before
-            if not self.mouse.canGoLeft() and not self.isVisited[self.mouse.x-1][self.mouse.y]:
-                self.path.append([self.mouse.x, self.mouse.y])
-                self.isVisited[self.mouse.x-1][self.mouse.y] = 1
-                self.mouse.goLeft()
-            elif not self.mouse.canGoUp() and not self.isVisited[self.mouse.x][self.mouse.y-1]:
-                self.path.append([self.mouse.x, self.mouse.y])
-                self.isVisited[self.mouse.x][self.mouse.y-1] = 1
-                self.mouse.goUp()
-            elif not self.mouse.canGoRight() and not self.isVisited[self.mouse.x+1][self.mouse.y]:
-                self.path.append([self.mouse.x, self.mouse.y])
-                self.isVisited[self.mouse.x+1][self.mouse.y] = 1
-                self.mouse.goRight()
-            elif not self.mouse.canGoDown() and not self.isVisited[self.mouse.x][self.mouse.y+1]:
-                self.path.append([self.mouse.x, self.mouse.y])
-                self.isVisited[self.mouse.x][self.mouse.y+1] = 1
-                self.mouse.goDown()
-            else:
-            # When four directions are either wall or visited, go back one step by popping up path stack
-                if len(self.path) != 0:
-                    x, y = self.path.pop()
-                    if x < self.mouse.x:
-                        self.mouse.goLeft()
-                    elif x > self.mouse.x:
-                        self.mouse.goRight()
-                    elif y < self.mouse.y:
-                        self.mouse.goUp()
-                    elif y > self.mouse.y:
-                        self.mouse.goDown()
-                else:
-                # The stack being empty means that mouse has gone back to the origin 
-                    self.isBack = True
-
-            sleep(0.5) # Delay for better demonstration
-
-Write a function to create a micromouse to run.
-
-::
-
-    from map import Map;
-    from mouse import Micromouse;
-    from strategy import StrategyTestDFS;
-
-    def myMouse():
-        mazeMap = Map(16, 16)                           # Specify the size of maze map: height and width.
-        micromouse = Micromouse(mazeMap)                # Create a micromouse with the empty map
-        micromouse.setInitPoint(0, 0)                   # Tell the micromouse the origin coordinate
-        micromouse.addTask(StrategyTestDFS(micromouse)) # Use the created Strategy with this micromouse instance to add a Task
-        micromouse.run()                                # The TaskLoader will run the tasks you have added
-
 Demonstrations
 ==========================
 
@@ -356,4 +262,99 @@ Set the Communication Range
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+Tutorial
+***************************
+
+To design a new algorithm for running a micromouse, you need to write your own strategy inheriting from class **Strategy** and overrides the functions:
+
+    - *checkFinished()* 
+    - *go()*.
+
+Create a python file and write a function to create a micromouse to run.
+
+Example
+==========================
+The example shows how DFS algorithm is applied using the framework to traverse the maze.
+ 
+For a basic DFS algorithm for only one mouse running in the maze, you can write a Strategy called **StrategyDFS** which inherits the **Strategy** class and overrides the function *checkFinished()* and function *go()*. The function *checkFinished()* is called because the Task Loader repeatedly check whether the task applying the strategy has finished after calling function *go()*. The main structure of function *run()* of Task Loader is as follows:
+
+::
+
+    def run():
+        while not strategy.checkFinished():
+            strategy.go()
+
+**Step 1**: Write your own strategy inheriting from class Strategy and overrides the function *checkFinished()* and function *go()*.
+
+Let’s suppose we write a class inherits from **Strategy** as follows: (copied from strategy.py -> **StrategyTestDFS**)
+
+::
+
+    class StrategyTestDFS(Strategy):
+        mouse = None    # It is necessary to keep a mouse instance as a member variant of Strategy class
+        isVisited = []  # The isVisited is a two-dimensional array marking which cell has been visited by itself or other robots
+        path = []       # The path is a stack to track the path that mouse goes through
+        isBack = False  # Use a flag to mark whether the mouse has gone back to the origin
+        network = None  # The instance of NetworkInterface
+
+        def __init__(self, mouse):  # Called when Micromouse add a task with this strategy and it passes instance of itself as the second argument
+            self.mouse = mouse
+            self.isVisited = [[0 for i in range(self.mouse.mazeMap.width)] for j in range(self.mouse.mazeMap.height)]
+            self.isVisited[self.mouse.x][self.mouse.y] = 1  # 1 marks that isVisited[x][y] has been visited
+
+        def checkFinished(self):
+            return self.isBack      # The terminating condition is that isBack = 1
+
+        def go(self):
+            # Sequentially check four directions, go if there is no wall and has not been visited before
+            if not self.mouse.canGoLeft() and not self.isVisited[self.mouse.x-1][self.mouse.y]:
+                self.path.append([self.mouse.x, self.mouse.y])
+                self.isVisited[self.mouse.x-1][self.mouse.y] = 1
+                self.mouse.goLeft()
+            elif not self.mouse.canGoUp() and not self.isVisited[self.mouse.x][self.mouse.y-1]:
+                self.path.append([self.mouse.x, self.mouse.y])
+                self.isVisited[self.mouse.x][self.mouse.y-1] = 1
+                self.mouse.goUp()
+            elif not self.mouse.canGoRight() and not self.isVisited[self.mouse.x+1][self.mouse.y]:
+                self.path.append([self.mouse.x, self.mouse.y])
+                self.isVisited[self.mouse.x+1][self.mouse.y] = 1
+                self.mouse.goRight()
+            elif not self.mouse.canGoDown() and not self.isVisited[self.mouse.x][self.mouse.y+1]:
+                self.path.append([self.mouse.x, self.mouse.y])
+                self.isVisited[self.mouse.x][self.mouse.y+1] = 1
+                self.mouse.goDown()
+            else:
+            # When four directions are either wall or visited, go back one step by popping up path stack
+                if len(self.path) != 0:
+                    x, y = self.path.pop()
+                    if x < self.mouse.x:
+                        self.mouse.goLeft()
+                    elif x > self.mouse.x:
+                        self.mouse.goRight()
+                    elif y < self.mouse.y:
+                        self.mouse.goUp()
+                    elif y > self.mouse.y:
+                        self.mouse.goDown()
+                else:
+                # The stack being empty means that mouse has gone back to the origin 
+                    self.isBack = True
+
+            sleep(0.5) # Delay for better demonstration
+
+Write a function to create a micromouse to run.
+
+::
+
+    from map import Map;
+    from mouse import Micromouse;
+    from strategy import StrategyTestDFS;
+
+    def myMouse():
+        mazeMap = Map(16, 16)                           # Specify the size of maze map: height and width.
+        micromouse = Micromouse(mazeMap)                # Create a micromouse with the empty map
+        micromouse.setInitPoint(0, 0)                   # Tell the micromouse the origin coordinate
+        micromouse.addTask(StrategyTestDFS(micromouse)) # Use the created Strategy with this micromouse instance to add a Task
+        micromouse.run()                                # The TaskLoader will run the tasks you have added
+
 
