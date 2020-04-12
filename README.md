@@ -7,7 +7,7 @@ Also, Install python3-tk:
 Download the Micromouse framework from Micrmouse Github Page. 
 
     $ cd ~
-    $ git clone https://github.com/wsonguga/MazeNavigation.git
+    $ git clone https://github.com/wsonguga/Micromouse.git
     $ cd Micromouse
  
 Configure the CORE environment for running core_demo.py
