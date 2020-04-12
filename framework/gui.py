@@ -88,7 +88,7 @@ if __name__ == '__main__':
 	network.initSocket()
 	network.startReceiveThread()
 
-	colorList = ['red', 'yellow', 'blue', 'green']
+	colorList = ['blue', 'yellow', 'pink', 'orange']
 	ipList = []
 
 	while True:
