@@ -45,3 +45,15 @@ Then open maze.xml, click the Start button.
     │   └── (...other code files...)
     └── README.md
 
+## Several Notes for understanding the code
+
+### auto-start design
+It is based on 6.2 of CORE tutorial (https://docs.google.com/document/d/1LPkPc2lbStwFtiukYfCxhcW7KewD028XzNfMd20uFFA/edit#heading=h.2clxcd487uk4) as written in framework/demo_core.py. When we open a CORE GUI, it looks for the __init__.py in current fold whose path we have put in /etc/core/core.conf. __init__py then loads preload.py. Then preload.py then loads backservice.sh. And then backservice.sh runs demo_core.py
+
+### node send message to host for moving itself
+In  (https://github.com/eniacluo/Micromouse/blob/master/framework/demo_core.py) line 16:
+micromouse.setMotorController(COREController(index, initPoint[index], controlNet='10.0.0.254'))
+
+In framework/controller_core.py (https://github.com/eniacluo/Micromouse/blob/master/framework/controller_core.py)
+In goStraight() function:
+os.system("coresendmsg -a " + self.controlNet + " node number=" + self.index + " xpos=" + str(self.xpos) + " ypos=" + str(self.ypos))
