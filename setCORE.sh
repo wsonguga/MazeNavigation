@@ -154,5 +154,10 @@ then
 fi
 
 echo "The environment is successfully set up for running demo_core.py."
-echo "Open maze.xml and click Start Session button to demo."
+
+echo "Restarting core-daemon service now to apply changes ..."
+sudo service core-daemon restart
+
+echo "Done! Run 'core-gui', open maze.xml and click Start button to demo."
+
 
