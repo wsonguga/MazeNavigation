@@ -155,7 +155,7 @@ fi
 
 echo "The environment is successfully set up for running demo_core.py."
 
-echo "Restarting core-daemon service now to apply changes ..."
+echo "Restarting core-daemon service to apply changes ..."
 sudo service core-daemon restart
 
 echo "Done! Run 'core-gui', open maze.xml and click Start button to demo."
